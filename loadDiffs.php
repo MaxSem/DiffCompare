@@ -34,7 +34,6 @@ class LoadDiffs extends Maintenance {
 			if ( $count % 100 == 0 ) {
 				$this->output( "$count diffs, $different different\n" );
 			}
-			if ( $count > 500 ) break;
 		}
 	}
 }

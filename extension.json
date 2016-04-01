@@ -1,0 +1,22 @@
+{
+	"name": "DiffCompare",
+	"author": [
+		"Max Semenik"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:Kartographer",
+	"license-name": "WTFPL",
+	"type": "other",
+	"MessagesDirs": {},
+	"AutoloadClasses": {
+		"DiffCompare\\DiffResult": "DiffResult.php",
+		"DiffCompare\\SpecialDiffCompare": "SpecialDiffCompare.php",
+		"DiffCompare\\Wiki": "Wiki.php"
+	},
+	"SpecialPages": {
+		"DiffCompare": "DiffCompare\\SpecialDiffCompare"
+	},
+	"ExtensionMessagesFiles": {
+		"DiffCompareAlias": "DiffCompare.alias.php"
+	},
+	"manifest_version": 1
+}

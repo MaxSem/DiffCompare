@@ -17,6 +17,7 @@ class LoadDiffs extends Maintenance {
 
 		$count = 0;
 		$different = 0;
+		$errors = 0;
 		foreach ( $lines as $line ) {
 			if ( !preg_match( '/(\d+)\s+(\d+)/', $line, $matches ) ) {
 				continue;
@@ -25,14 +26,18 @@ class LoadDiffs extends Maintenance {
 			$oldid = intval( $matches[1] );
 			$newid = intval( $matches[2] );
 
-			$diff = $wiki->generateDiff( $oldid, $newid );
-			if ( $diff->text1 != $diff->text2 ) {
-				$different++;
-				$diff->saveToDB();
+			try {
+				$diff = $wiki->generateDiff( $oldid, $newid );
+				if ( $diff->text1 != $diff->text2 ) {
+					$different++;
+					$diff->saveToDB();
+				}
+			} catch ( \DiffCompare\NetworkException $ex ) {
+				$errors++;
 			}
 
 			if ( $count % 100 == 0 ) {
-				$this->output( "$count diffs, $different different\n" );
+				$this->output( "$count diffs, $different different, $errors errors\n" );
 			}
 		}
 	}

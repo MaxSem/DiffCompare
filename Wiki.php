@@ -22,7 +22,7 @@ class Wiki {
 				return $result;
 			}
 		}
-		die( "Error requesting $url\n" );
+		throw new NetworkException( "Error requesting $url\n" );
 	}
 
 	public function api( array $params ) {

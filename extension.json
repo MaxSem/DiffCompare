@@ -9,6 +9,7 @@
 	"MessagesDirs": {},
 	"AutoloadClasses": {
 		"DiffCompare\\DiffResult": "DiffResult.php",
+		"DiffCompare\\NetworkException": "NetworkException.php",
 		"DiffCompare\\SpecialDiffCompare": "SpecialDiffCompare.php",
 		"DiffCompare\\Wiki": "Wiki.php"
 	},

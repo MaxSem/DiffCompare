@@ -12,18 +12,17 @@ CREATE TABLE IF NOT EXISTS diffs (
   diff_time2 INT UNSIGNED NOT NULL,
   diff_random FLOAT NOT NULL,
 
-  PRIMARY KEY( diff_oldid, diff_newid )
+  PRIMARY KEY( diff_oldid, diff_newid ),
+  KEY random(diff_random)
 );
-
-CREATE INDEX diff_random ON diffs (diff_random);
 
 CREATE TABLE IF NOT EXISTS diff_votes (
   dv_id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   dv_oldid INT UNSIGNED NOT NULL,
   dv_newid INT UNSIGNED NOT NULL,
   dv_user VARBINARY(255) NOT NULL,
-  dv_winner INT NOT NULL,
-  dv_timestamp VARCHAR(14),
+  dv_vote INT NOT NULL,
+  dv_timestamp VARCHAR(14) NOT NULL,
 
-  KEY winner(dv_winner)
+  KEY votes(dv_vote)
 );

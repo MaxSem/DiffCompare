@@ -5,6 +5,12 @@ namespace DiffCompare;
 use SpecialPage;
 
 class SpecialDiffCompare extends SpecialPage {
+	private static $voteMapping = [
+		'DairikiDiff' => 1,
+		'none' => 0,
+		'wikidiff3' => -1,
+	];
+
 	/** @var Wiki */
 	private $wiki;
 
@@ -104,6 +110,33 @@ HTML;
 		] );
 		$this->getOutput()->redirect( $url );
 		$this->getOutput()->enableClientCache( false );
+	}
+
+	private function recordVote() {
+		$req = $this->getRequest();
+		$vote = $req->getText( 'choice' );
+		if ( !isset ( self::$voteMapping[$vote] ) ) {
+			die( 'Unrecognized vote' );
+		}
+		$oldid = $req->getInt( 'oldid' );
+		$newid = $req->getInt( 'newid' );
+		if ( !$oldid || !$newid ) {
+			die( 'oldid and newid are required' );
+		}
+
+		$dbw = wfGetDB( DB_MASTER );
+		$dbw->insert( 'diff_votes',
+			[
+				'dv_oldid' => $oldid,
+				'dv_newid' => $newid,
+				'dv_user' => $this->getUser()->getName(),
+				'dv_vote' => self::$voteMapping[$vote],
+				'dv_timestamp' => $dbw->timestamp(),
+			],
+			__METHOD__
+		);
+
+		$this->nextDiff();
 	}
 
 	private function getRecentChange() {

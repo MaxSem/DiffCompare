@@ -42,7 +42,7 @@ class SpecialDiffCompare extends SpecialPage {
 				if ( $oldid && $newid ) {
 					$this->showDiff( $oldid, $newid );
 				} else {
-					$this->showRecentChanges();
+					$this->nextDiff();
 				}
 		}
 	}
@@ -71,6 +71,7 @@ class SpecialDiffCompare extends SpecialPage {
 		$voteParams = [ 'oldid' => $oldid, 'newid' => $newid ];
 		$voteUrl = htmlspecialchars( $votePage->getLocalURL( $voteParams ) );
 		$nextUrl = htmlspecialchars( $this->getPageTitle( 'next' )->getLocalURL() );
+		$diffOfDiffs = $this->compareDiffs( $text1, $text2 );
 
 		$html = <<<HTML
 <table style="width: 100%; text-align: center;">
@@ -97,6 +98,8 @@ class SpecialDiffCompare extends SpecialPage {
 <td id="votesecret" colspan="2"><span class="mw-collapsible mw-collapsed" style="text-align: center; color: white;">$method1 ($time1 ms) | $method2 ($time2 ms)</span></td>
 
 </table>
+
+$diffOfDiffs
 HTML;
 
 		$this->getOutput()->addHTML( $html );
@@ -169,5 +172,29 @@ HTML;
 		}
 
 		return $changes[ mt_rand( 0, $num - 1 ) ];
+	}
+
+	private function compareDiffs( &$text1, &$text2 ) {
+		if ( $text1 == $text2 ) {
+			return '';
+		}
+		$lines1 = explode( "\n", $text1 );
+		$lines2 = explode( "\n", $text2 );
+
+		$html = '';
+		$limit = min( count( $lines1 ), count( $lines2 ) );
+		for ( $i = 0; $i < $limit; $i++ ) {
+			if ( $lines1[$i] != $lines2[$i] ) {
+				$html .= wikidiff2_do_diff( $lines1[$i], $lines2[$i], 0 );
+				$lines1[$i] = preg_replace( '/^<tr><td /', '<tr><td style="background: yellow;" ', $lines1[$i] );
+			}
+		}
+		if ( $html ) {
+			$html = "<h1>Differences between diffs</h1><table id='mw-mf-diffview'>$html</table>";
+			$text1 = implode( "\n", $lines1 );
+			$text2 = implode( "\n", $lines2 );
+		}
+
+		return $html;
 	}
 }

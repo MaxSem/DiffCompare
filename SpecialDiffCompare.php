@@ -187,6 +187,7 @@ HTML;
 			if ( $lines1[$i] != $lines2[$i] ) {
 				$html .= wikidiff2_do_diff( $lines1[$i], $lines2[$i], 0 );
 				$lines1[$i] = preg_replace( '/^<tr><td /', '<tr><td style="background: yellow;" ', $lines1[$i] );
+				$lines2[$i] = preg_replace( '/^<tr><td /', '<tr><td style="background: yellow;" ', $lines2[$i] );
 			}
 		}
 		if ( $html ) {

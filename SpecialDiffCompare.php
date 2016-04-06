@@ -49,6 +49,9 @@ class SpecialDiffCompare extends SpecialPage {
 
 	private function showDiff( $oldid, $newid ) {
 		$diff = $this->wiki->getDiff( $oldid, $newid );
+		if ( $diff->text1 !== $diff->text2 ) {
+			$diff->saveToDB();
+		}
 
 		$order = mt_rand( 0, 1 );
 		if ( $order == 0 ) {
@@ -74,6 +77,7 @@ class SpecialDiffCompare extends SpecialPage {
 		$diffOfDiffs = $this->compareDiffs( $text1, $text2 );
 
 		$html = <<<HTML
+(Links to <a href="https://en.wikipedia.org/w/index.php?oldid=$oldid">old revision</a>, <a href="https://en.wikipedia.org/w/index.php?oldid=$newid">new revision</a>)
 <table style="width: 100%; text-align: center;">
 <tr>
 <td style="width: 33%"><button><a class="votelink" href="{$voteUrl}&amp;choice={$method1}">&lt; Left diff is better</a></button></td>

@@ -72,7 +72,6 @@ class Wiki {
 		}
 
 		$diff = $this->generateDiff( $oldid, $newid );
-		$diff->saveToDB();
 
 		return $diff;
 	}

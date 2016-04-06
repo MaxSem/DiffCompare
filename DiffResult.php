@@ -13,15 +13,19 @@ class DiffResult {
 	}
 
 	public function saveToDB() {
-		wfGetDB( DB_MASTER )->insert( 'diffs', [
-			'diff_oldid' => $this->oldid,
-			'diff_newid' => $this->newid,
-			'diff_text1' => $this->text1,
-			'diff_time1' => $this->time1,
-			'diff_text2' => $this->text2,
-			'diff_time2' => $this->time2,
-			'diff_random' => floatval( mt_rand() ) / mt_getrandmax(),
-		] );
+		wfGetDB( DB_MASTER )->insert( 'diffs',
+			[
+				'diff_oldid' => $this->oldid,
+				'diff_newid' => $this->newid,
+				'diff_text1' => $this->text1,
+				'diff_time1' => $this->time1,
+				'diff_text2' => $this->text2,
+				'diff_time2' => $this->time2,
+				'diff_random' => floatval( mt_rand() ) / mt_getrandmax(),
+			],
+			__METHOD__,
+			[ 'IGNORE' ]
+		);
 	}
 
 	public static function newFromRow( stdClass $row ) {

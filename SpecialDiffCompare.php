@@ -72,20 +72,39 @@ class SpecialDiffCompare extends SpecialPage {
 
 		$votePage = $this->getPageTitle( 'vote' );
 		$voteParams = [ 'oldid' => $oldid, 'newid' => $newid ];
-		$voteUrl = htmlspecialchars( $votePage->getLocalURL( $voteParams ) );
-		$nextUrl = htmlspecialchars( $this->getPageTitle( 'next' )->getLocalURL() );
+		$voteUrl = $votePage->getLocalURL( $voteParams );
+		$nextUrl = $this->getPageTitle( 'next' )->getLocalURL();
 		$diffOfDiffs = $this->compareDiffs( $text1, $text2 );
+
+		$this->getOutput()->enableOOUI();
+
+		$buttonLeft = new \OOUI\ButtonWidget( [
+			'href' => "{$voteUrl}&choice={$method1}",
+			'label' => '< Left diff is better',
+		] );
+		$buttonSame = new \OOUI\ButtonWidget( [
+			'href' => "{$voteUrl}&choice=none",
+			'label' => 'Both are equally good/bad',
+		] );
+		$buttonRight = new \OOUI\ButtonWidget( [
+			'href' => "{$voteUrl}&choice={$method2}",
+			'label' => 'Right diff is better >',
+		] );
+		$buttonSkip = new \OOUI\ButtonWidget( [
+			'href' => $nextUrl,
+			'label' => 'I abstain',
+		] );
 
 		$html = <<<HTML
 (Links to <a href="https://en.wikipedia.org/w/index.php?oldid=$oldid">old revision</a>, <a href="https://en.wikipedia.org/w/index.php?oldid=$newid">new revision</a>)
 <table style="width: 100%; text-align: center;">
 <tr>
-<td style="width: 33%"><button><a class="votelink" href="{$voteUrl}&amp;choice={$method1}">&lt; Left diff is better</a></button></td>
+<td style="width: 33%">$buttonLeft</td>
 <td style="width: 34%">
-	<button><a class="votelink" href="{$voteUrl}&amp;choice=none">Both are equally good/bad</a></button>
-	<button><a class="votelink" href="{$nextUrl}">I abstain</a></button>
+	$buttonSame
+	$buttonSkip
 </td>
-<td style="width: 33%"><button><a class="votelink" href="{$voteUrl}&amp;choice={$method2}">Right diff is better &gt;</a></button></td>
+<td style="width: 33%">$buttonRight</td>
 </tr>
 </table>
 

@@ -91,10 +91,10 @@ class SpecialDiffCompare extends SpecialPage {
 
 <table style="width: 100%">
 <tr>
-	<td style="width: 50%">
+	<td style="width: 50%; vertical-align: top;">
 		<table>{$text1}</table>
 	</td>
-	<td style="width: 50%">
+	<td style="width: 50%; vertical-align: top;">
 		<table>{$text2}</table>
 	</td>
 </tr>

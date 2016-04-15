@@ -78,19 +78,19 @@ class SpecialDiffCompare extends SpecialPage {
 
 		$this->getOutput()->enableOOUI();
 
-		$buttonLeft = new OOUI\ButtonWidget( [
+		$buttonLeft = new \OOUI\ButtonWidget( [
 			'href' => "{$voteUrl}&choice={$method1}",
 			'label' => '< Left diff is better',
 		] );
-		$buttonSame = new OOUI\ButtonWidget( [
+		$buttonSame = new \OOUI\ButtonWidget( [
 			'href' => "{$voteUrl}&choice=none",
 			'label' => 'Both are equally good/bad',
 		] );
-		$buttonRight = new OOUI\ButtonWidget( [
+		$buttonRight = new \OOUI\ButtonWidget( [
 			'href' => "{$voteUrl}&choice={$method2}",
 			'label' => 'Right diff is better >',
 		] );
-		$buttonSkip = new OOUI\ButtonWidget( [
+		$buttonSkip = new \OOUI\ButtonWidget( [
 			'href' => $nextUrl,
 			'label' => 'I abstain',
 		] );

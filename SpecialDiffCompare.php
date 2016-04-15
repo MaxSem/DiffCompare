@@ -72,8 +72,8 @@ class SpecialDiffCompare extends SpecialPage {
 
 		$votePage = $this->getPageTitle( 'vote' );
 		$voteParams = [ 'oldid' => $oldid, 'newid' => $newid ];
-		$voteUrl = htmlspecialchars( $votePage->getLocalURL( $voteParams ) );
-		$nextUrl = htmlspecialchars( $this->getPageTitle( 'next' )->getLocalURL() );
+		$voteUrl = $votePage->getLocalURL( $voteParams );
+		$nextUrl = $this->getPageTitle( 'next' )->getLocalURL();
 		$diffOfDiffs = $this->compareDiffs( $text1, $text2 );
 
 		$this->getOutput()->enableOOUI();
